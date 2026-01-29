@@ -1,35 +1,50 @@
-let p1Score = 0, p2Score = 0;
+let stats = {
+    p1: { total: 0, inning: 0, fouls: 0 },
+    p2: { total: 0, inning: 0, fouls: 0 }
+};
 
-function startGame() {
-    document.getElementById('p1-name').innerText = document.getElementById('p1-input').value || "選手 1";
-    document.getElementById('p2-name').innerText = document.getElementById('p2-input').value || "選手 2";
-    document.getElementById('race-display').innerText = document.getElementById('race-input').value;
-    document.getElementById('lobby').style.display = 'none';
+let seconds = 0;
+
+// 頁面載入後直接開始
+window.onload = function() {
+    startTimer();
+};
+
+function changeValue(player, type, val) {
+    stats[player][type] += val;
+    if (stats[player][type] < 0) stats[player][type] = 0;
+
+    const elementId = player + '-' + (type === 'total' ? 'total' : (type === 'inning' ? 'inning' : 'fouls'));
+    document.getElementById(elementId).innerText = stats[player][type];
+
+    // 切換發球方亮邊
+    document.getElementById('p1-area').classList.toggle('breaking', player === 'p1');
+    document.getElementById('p2-area').classList.toggle('breaking', player === 'p2');
 }
 
-function changeScore(player, val) {
-    if(player === 'p1') {
-        p1Score += val;
-        document.getElementById('p1-total').innerText = p1Score;
-        // 切換開球方視覺效果
-        document.getElementById('p1-area').classList.add('breaking');
-        document.getElementById('p2-area').classList.remove('breaking');
-    } else {
-        p2Score += val;
-        document.getElementById('p2-total').innerText = p2Score;
-        document.getElementById('p2-area').classList.add('breaking');
-        document.getElementById('p1-area').classList.remove('breaking');
-    }
+function resetInning() {
+    ['p1', 'p2'].forEach(p => {
+        stats[p].inning = 0;
+        stats[p].fouls = 0;
+        document.getElementById(p + '-inning').innerText = 0;
+        document.getElementById(p + '-fouls').innerText = 0;
+    });
 }
 
-function resetGame() {
-    if(confirm("確定要重置比賽嗎？")) location.reload();
+function startTimer() {
+    setInterval(() => {
+        seconds++;
+        let m = Math.floor(seconds / 60);
+        let s = seconds % 60;
+        document.getElementById('timer').innerText = 
+            (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+    }, 1000);
 }
 
 function toggleFull() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
-    } else if (document.exitFullscreen) {
+    } else {
         document.exitFullscreen();
     }
 }
