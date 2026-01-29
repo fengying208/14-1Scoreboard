@@ -15,7 +15,7 @@ body, html {
 .player-section { flex: 2; display: flex; flex-direction: column; gap: 10px; }
 .center-control { flex: 1; display: flex; flex-direction: column; gap: 10px; }
 
-/* --- 跨欄位高度同步 (對齊核心) --- */
+/* --- 跨欄位高度同步 --- */
 .header, .row-header { height: 12%; }
 .score-display, .row-score { flex: 1; }
 .info-box, .row-info { height: 15%; }
@@ -39,17 +39,26 @@ body, html {
 .row-score { position: relative; justify-content: center; }
 #race-info { font-size: 2.2rem; color: #555; font-weight: bold; }
 
-.button-group { position: absolute; bottom: 0; width: 100%; display: flex; flex-direction: column; gap: 5px; align-items: center; }
-.control-btn { width: 80%; padding: 8px; background: none; border: 1px solid #333; color: #444; cursor: pointer; border-radius: 4px; font-size: 0.9rem; }
+.button-group { 
+    position: absolute; bottom: 0; width: 100%; 
+    display: flex; flex-direction: column; gap: 10px; align-items: center; 
+}
+
+.control-btn { 
+    width: 80%; padding: 8px; background: none; border: 1px solid #333; 
+    color: #444; cursor: pointer; border-radius: 4px; font-size: 0.9rem; 
+}
 .control-btn:hover { border-color: #777; color: #777; }
 
-/* 亮橘色「下一局」按鈕 */
+/* 亮橘色「下一局」按鈕：放大一倍版本 */
 .next-btn {
     background-color: #ff6600 !important;
     color: #fff !important;
     border-color: #ff6600 !important;
     font-weight: bold;
-    display: none; /* 預設隱藏 */
+    padding: 20px 0 !important; /* 增加內距高度 */
+    font-size: 1.8rem !important; /* 字體放大一倍 */
+    display: none; 
 }
 
 .label-text { font-size: 1.6rem; color: #888; letter-spacing: 4px; font-weight: bold; }

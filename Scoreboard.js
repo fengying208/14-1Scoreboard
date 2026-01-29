@@ -14,12 +14,17 @@ window.onload = function() {
  */
 function changeValue(player, type, val) {
     stats[player][type] += val;
+    // 確保數值不小於 0
     if (stats[player][type] < 0) stats[player][type] = 0;
 
-    // 更新介面
-    document.getElementById(player + '-' + type).innerText = stats[player][type];
+    // 更新介面顯示
+    const targetId = player + '-' + type;
+    const element = document.getElementById(targetId);
+    if (element) {
+        element.innerText = stats[player][type];
+    }
 
-    // 檢查「下一局」按鈕顯示條件 (總分 14 點亮)
+    // 檢查「下一局」按鈕顯示條件：兩邊單局得分相加等於 14
     const nextBtn = document.getElementById('next-inning-btn');
     if (stats.p1.inning + stats.p2.inning === 14) {
         nextBtn.style.display = 'block';
@@ -27,7 +32,7 @@ function changeValue(player, type, val) {
         nextBtn.style.display = 'none';
     }
 
-    // 擊球方高亮 (加分時切換)
+    // 擊球方高亮切換：只有在增加分數時才切換
     if (val > 0 && (type === 'inning' || type === 'total')) {
         document.getElementById('p1-area').classList.toggle('breaking', player === 'p1');
         document.getElementById('p2-area').classList.toggle('breaking', player === 'p2');
@@ -35,24 +40,24 @@ function changeValue(player, type, val) {
 }
 
 /**
- * 結算下一局
+ * 結算下一局：將單局得分與犯規併入總分
  */
 function processNextInning() {
     ['p1', 'p2'].forEach(p => {
-        // 結算公式：總分 = 總分 + 單局得分 - 犯規次數 (不小於 0)
+        // 公式：新總分 = 舊總分 + 單局得分 - 犯規次數
         stats[p].total = Math.max(0, stats[p].total + stats[p].inning - stats[p].fouls);
         
-        // 歸零單局資訊
+        // 單局數據歸零
         stats[p].inning = 0;
         stats[p].fouls = 0;
 
-        // 同步畫面
+        // 同步 UI
         document.getElementById(p + '-total').innerText = stats[p].total;
         document.getElementById(p + '-inning').innerText = 0;
         document.getElementById(p + '-fouls').innerText = 0;
     });
 
-    // 結算後按鈕隱藏
+    // 結算後隱藏按鈕
     document.getElementById('next-inning-btn').style.display = 'none';
 }
 
