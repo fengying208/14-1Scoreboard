@@ -7,14 +7,25 @@ body, html {
 }
 
 .scoreboard-container {
-    display: flex; width: 98vw; height: 95vh; gap: 10px;
+    display: flex; width: 98vw; height: 96vh; gap: 15px;
 }
 
+/* 兩側選手區 */
 .player-section {
     flex: 2; display: flex; flex-direction: column; gap: 10px;
 }
 
-/* 將原本的白色 border 改為灰色 */
+/* 中間控制區 */
+.center-control {
+    flex: 1; display: flex; flex-direction: column; gap: 10px;
+}
+
+/* 通用高度定義 (確保對齊的核心) */
+.header, .row-header { height: 12%; }
+.score-display, .row-score { flex: 1; }
+.info-box, .row-info { height: 15%; }
+
+/* 方框與內容對齊 */
 .box {
     border: 2px solid #555; 
     border-radius: 8px;
@@ -22,40 +33,43 @@ body, html {
     transition: all 0.2s;
 }
 
-.header { height: 12%; font-size: 2rem; background: #1a1a1a; color: #ccc; }
-.score-display { flex: 1; font-size: 10rem; font-weight: bold; color: #ff6600; }
+.header { font-size: 2.2rem; background: #1a1a1a; color: #ccc; }
+.score-display { font-size: 11rem; font-weight: bold; color: #ff6600; }
+.info-box { font-size: 4rem; background: #0a0a0a; }
 
-/* 數字顯示框 */
-.info-box { height: 15%; font-size: 3rem; background: #0a0a0a; }
-
-/* 中間控制區 */
-.center-control {
-    flex: 1; display: flex; flex-direction: column; 
-    justify-content: space-between; align-items: center; padding: 10px 0;
+/* 中間列內容佈局 */
+.center-row {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
 }
 
-.center-top { text-align: center; height: 12%; }
-#timer { font-size: 1.5rem; color: #888; }
-#race-info { font-size: 1.8rem; color: #555; font-weight: bold; }
+/* 1. 計時器對齊姓名：垂直至中 */
+#timer { font-size: 1.8rem; color: #888; }
 
-/* 中央標籤對齊邏輯 */
-.center-labels {
-    flex: 1; display: flex; flex-direction: column; 
-    justify-content: flex-end; width: 100%; gap: 10px;
-    padding-bottom: 5px; /* 微調對齊 */
+/* 2. Race與按鈕對齊總分區 */
+.row-score {
+    position: relative; /* 為了讓按鈕可以參考到底部 */
+    display: flex; flex-direction: column;
+    justify-content: center; /* 讓 Race 至中 */
 }
-.label-text {
-    height: 15%; /* 與兩側 info-box 高度一致 */
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; color: #888; letter-spacing: 2px;
-}
+#race-info { font-size: 2rem; color: #555; font-weight: bold; }
 
-.center-bottom { display: flex; flex-direction: column; gap: 5px; width: 80%; }
+/* 按鈕組對齊總分底端 */
+.button-group {
+    position: absolute; bottom: 0; width: 100%;
+    display: flex; flex-direction: column; gap: 5px; align-items: center;
+}
 .control-btn {
-    padding: 8px; background: none; border: 1px solid #333; 
-    color: #444; cursor: pointer; border-radius: 4px; font-size: 0.9rem;
+    width: 80%; padding: 6px; background: none; border: 1px solid #333; 
+    color: #444; cursor: pointer; border-radius: 4px; font-size: 0.85rem;
 }
 .control-btn:hover { border-color: #777; color: #777; }
 
-/* 擊球者高亮 (灰色系的高亮) */
+/* 3 & 4. 單局標籤對齊數字框：垂直至中 */
+.label-text {
+    font-size: 1.8rem; color: #888; letter-spacing: 4px; font-weight: bold;
+}
+
+/* 高亮效果 */
 .breaking { border-color: #ff6600 !important; box-shadow: 0 0 15px rgba(255, 102, 0, 0.2); }
