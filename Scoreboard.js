@@ -91,3 +91,9 @@ function toggleFull() {
         document.exitFullscreen();
     }
 }
+
+function returnToLobby() {
+    if(confirm("確定要結束比賽並返回主大廳嗎？")) {
+        window.location.href = 'index.html';
+    }
+}
