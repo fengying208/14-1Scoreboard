@@ -4,6 +4,9 @@ let stats = {
 };
 
 let seconds = 0;
+let pressTimer;
+let isLongPress = false;
+const LONG_PRESS_DURATION = 600; // 長按判斷時間 (毫秒)
 
 window.onload = function() {
     // 從 localStorage 讀取大廳設定的資料
@@ -16,9 +19,72 @@ window.onload = function() {
     document.getElementById('p2-name').innerText = p2Saved;
     document.getElementById('race-display').innerText = raceSaved;
 
+    initTouchLogic(); // 初始化觸控監聽
     // 啟動計時器
     startTimer();
 };
+
+function initTouchLogic() {
+    const clickables = document.querySelectorAll('.clickable');
+
+    clickables.forEach(el => {
+        const handleStart = (e) => {
+            isLongPress = false;
+            const player = el.getAttribute('data-player');
+            const type = el.getAttribute('data-type');
+
+            pressTimer = setTimeout(() => {
+                isLongPress = true;
+                changeValue(player, type, -1); // 長按觸發扣分
+                if (navigator.vibrate) navigator.vibrate(50); // 手機震動回饋
+            }, LONG_PRESS_DURATION);
+        };
+
+        const handleEnd = (e) => {
+            clearTimeout(pressTimer);
+            if (!isLongPress) {
+                const player = el.getAttribute('data-player');
+                const type = el.getAttribute('data-type');
+                changeValue(player, type, 1); // 短按觸發加分
+            }
+            e.preventDefault(); // 防止觸發預設 click
+        };
+
+        const handleCancel = () => {
+            clearTimeout(pressTimer);
+        };
+
+        // 監聽觸控事件 (平板/手機)
+        el.addEventListener('touchstart', handleStart, { passive: false });
+        el.addEventListener('touchend', handleEnd, { passive: false });
+        el.addEventListener('touchmove', handleCancel);
+
+        // 監聽滑鼠事件 (電腦測試用)
+        el.addEventListener('mousedown', handleStart);
+        el.addEventListener('mouseup', handleEnd);
+        el.addEventListener('mouseleave', handleCancel);
+    });
+}
+
+function changeValue(player, type, val) {
+    stats[player][type] += val;
+    if (stats[player][type] < 0) stats[player][type] = 0;
+
+    const targetId = player + '-' + type;
+    const element = document.getElementById(targetId);
+    if (element) {
+        element.innerText = stats[player][type];
+    }
+
+    const nextBtn = document.getElementById('next-inning-btn');
+    const totalInningScore = stats.p1.inning + stats.p2.inning;
+    nextBtn.style.display = (totalInningScore === 14) ? 'block' : 'none';
+
+    if (val > 0 && (type === 'inning' || type === 'total')) {
+        document.getElementById('p1-area').classList.toggle('breaking', player === 'p1');
+        document.getElementById('p2-area').classList.toggle('breaking', player === 'p2');
+    }
+}
 
 /**
  * 變動分數與檢查邏輯

@@ -11,6 +11,16 @@ body, html {
     display: flex; width: 98vw; height: 96vh; gap: 15px;
 }
 
+.clickable {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Safari */
+    -khtml-user-select: none;    /* Konqueror HTML */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version */
+    touch-action: manipulation;  /* 減少雙擊縮放延遲 */
+}
+
 /* --- 佈局權重 --- */
 .player-section { flex: 2; display: flex; flex-direction: column; gap: 10px; }
 .center-control { flex: 1; display: flex; flex-direction: column; gap: 10px; }
