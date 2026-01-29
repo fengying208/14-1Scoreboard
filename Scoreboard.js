@@ -26,13 +26,15 @@ function changeValue(player, type, val) {
 
     // 檢查「下一局」按鈕顯示條件：兩邊單局得分相加等於 14
     const nextBtn = document.getElementById('next-inning-btn');
-    if (stats.p1.inning + stats.p2.inning === 14) {
+    const totalInningScore = stats.p1.inning + stats.p2.inning;
+    
+    if (totalInningScore === 14) {
         nextBtn.style.display = 'block';
     } else {
         nextBtn.style.display = 'none';
     }
 
-    // 擊球方高亮切換：只有在增加分數時才切換
+    // 擊球方高亮切換：只有在加分時才切換進攻方
     if (val > 0 && (type === 'inning' || type === 'total')) {
         document.getElementById('p1-area').classList.toggle('breaking', player === 'p1');
         document.getElementById('p2-area').classList.toggle('breaking', player === 'p2');

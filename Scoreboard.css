@@ -36,8 +36,9 @@ body, html {
 /* --- 中間欄位細部樣式 --- */
 .center-row { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 #timer { font-size: 2rem; color: #888; }
+
 .row-score { position: relative; justify-content: center; }
-#race-info { font-size: 2.2rem; color: #555; font-weight: bold; }
+#race-info { font-size: 2.5rem; color: #555; font-weight: bold; } /* 稍微調大括號字體 */
 
 .button-group { 
     position: absolute; bottom: 0; width: 100%; 
@@ -50,14 +51,14 @@ body, html {
 }
 .control-btn:hover { border-color: #777; color: #777; }
 
-/* 亮橘色「下一局」按鈕：放大一倍版本 */
+/* 亮橘色「下一局」按鈕：放大版本 */
 .next-btn {
     background-color: #ff6600 !important;
     color: #fff !important;
     border-color: #ff6600 !important;
     font-weight: bold;
-    padding: 20px 0 !important; /* 增加內距高度 */
-    font-size: 1.8rem !important; /* 字體放大一倍 */
+    padding: 20px 0 !important; 
+    font-size: 1.8rem !important; 
     display: none; 
 }
 
