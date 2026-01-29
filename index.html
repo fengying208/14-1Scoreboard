@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>撞球計分系統 - 大廳</title>
+    <link rel="stylesheet" href="lobby.css">
+</head>
+<body>
+    <div class="lobby-container">
+        <div class="lobby-card">
+            <h1>BILLIARDS</h1>
+            
+            <div class="input-group">
+                <label>選手 1 姓名</label>
+                <input type="text" id="p1-input" placeholder="請輸入姓名" value="選手 1">
+            </div>
+
+            <div class="input-group">
+                <label>選手 2 姓名</label>
+                <input type="text" id="p2-input" placeholder="請輸入姓名" value="選手 2">
+            </div>
+
+            <div class="input-group">
+                <label>搶分數 (Race to)</label>
+                <input type="number" id="race-input" value="5" min="1">
+            </div>
+
+            <button id="start-btn" onclick="startMatch()">開始比賽</button>
+        </div>
+    </div>
+
+    <script src="lobby.js"></script>
+</body>
+</html>

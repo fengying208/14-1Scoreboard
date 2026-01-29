@@ -6,6 +6,17 @@ let stats = {
 let seconds = 0;
 
 window.onload = function() {
+    // 從 localStorage 讀取大廳設定的資料
+    const p1Saved = localStorage.getItem('billiards_p1') || "選手 1";
+    const p2Saved = localStorage.getItem('billiards_p2') || "選手 2";
+    const raceSaved = localStorage.getItem('billiards_race') || 5;
+
+    // 將資料寫入 HTML
+    document.getElementById('p1-name').innerText = p1Saved;
+    document.getElementById('p2-name').innerText = p2Saved;
+    document.getElementById('race-display').innerText = raceSaved;
+
+    // 啟動計時器
     startTimer();
 };
 
