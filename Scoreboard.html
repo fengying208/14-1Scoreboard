@@ -4,88 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>專業撞球計分系統</title>
-    <style>
-        /* --- CSS 樣式區 --- */
-        * { box-sizing: border-box; user-select: none; }
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            background-color: #000; font-family: "Microsoft JhengHei", sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            color: #fff; overflow: hidden;
-        }
-
-        .scoreboard-container {
-            display: flex; width: 98vw; height: 96vh; gap: 15px;
-        }
-
-        /* 兩側選手區 */
-        .player-section {
-            flex: 2; display: flex; flex-direction: column; gap: 10px;
-        }
-
-        /* 中間控制區 */
-        .center-control {
-            flex: 1; display: flex; flex-direction: column; gap: 10px;
-        }
-
-        /* --- 高度對齊核心設定 --- */
-        /* 1. 姓名與計時高度 (12%) */
-        .header, .row-header { height: 12%; }
-        /* 2. 總分與Race高度 (彈性填滿) */
-        .score-display, .row-score { flex: 1; }
-        /* 3. 單局與犯規高度 (15%) */
-        .info-box, .row-info { height: 15%; }
-
-        /* 方框樣式：灰邊框 */
-        .box {
-            border: 2px solid #555; 
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .header { font-size: 2.2rem; background: #1a1a1a; color: #ccc; }
-        .score-display { font-size: 11rem; font-weight: bold; color: #ff6600; }
-        .info-box { font-size: 4rem; background: #0a0a0a; }
-
-        /* 中間列內容佈局 */
-        .center-row {
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center;
-        }
-
-        /* 1. 計時器：垂直至中對齊選手名 */
-        #timer { font-size: 2rem; color: #888; }
-
-        /* 2. Race與按鈕區：垂直對齊總分 */
-        .row-score {
-            position: relative; 
-            display: flex; flex-direction: column;
-            justify-content: center; /* Race 於總分框中間至中 */
-        }
-        #race-info { font-size: 2.2rem; color: #555; font-weight: bold; }
-
-        /* 按鈕組：與總分底端對齊 */
-        .button-group {
-            position: absolute; bottom: 0; width: 100%;
-            display: flex; flex-direction: column; gap: 5px; align-items: center;
-        }
-        .control-btn {
-            width: 80%; padding: 8px; background: none; border: 1px solid #333; 
-            color: #444; cursor: pointer; border-radius: 4px; font-size: 0.9rem;
-        }
-        .control-btn:hover { border-color: #ff6600; color: #ff6600; }
-
-        /* 3 & 4. 中間標籤：垂直至中對齊對應數字框 */
-        .label-text {
-            font-size: 1.6rem; color: #888; letter-spacing: 4px; font-weight: bold;
-        }
-
-        /* 當前擊球者高亮 (橘邊) */
-        .breaking { border-color: #ff6600 !important; box-shadow: 0 0 20px rgba(255, 102, 0, 0.2); }
-    </style>
+    <link rel="stylesheet" href="Scoreboard.css">
 </head>
 <body>
 
@@ -120,7 +39,7 @@
             <div class="center-row row-score">
                 <div id="race-info">Race: <span id="race-display">5</span></div>
                 <div class="button-group">
-                    <button class="control-btn" onclick="resetInning()">清除單局</button>
+                    <button id="next-inning-btn" class="control-btn next-btn" onclick="processNextInning()">下一局</button>
                     <button class="control-btn" onclick="toggleFull()">全螢幕</button>
                 </div>
             </div>
@@ -157,71 +76,6 @@
         </div>
     </div>
 
-    <script>
-        /* --- JavaScript 邏輯區 --- */
-        let stats = {
-            p1: { total: 0, inning: 0, fouls: 0 },
-            p2: { total: 0, inning: 0, fouls: 0 }
-        };
-
-        let seconds = 0;
-
-        // 初始化
-        window.onload = function() {
-            startTimer();
-        };
-
-        /**
-         * 統一變動數值函數
-         * @param {string} player - 'p1' 或 'p2'
-         * @param {string} type - 'total', 'inning', 'fouls'
-         * @param {number} val - 增減值
-         */
-        function changeValue(player, type, val) {
-            stats[player][type] += val;
-            if (stats[player][type] < 0) stats[player][type] = 0;
-
-            // 更新畫面
-            document.getElementById(player + '-' + type).innerText = stats[player][type];
-
-            // 視覺回饋：只有加「單局得分」或「總分」時切換擊球方亮邊
-            if (val > 0 && (type === 'inning' || type === 'total')) {
-                document.getElementById('p1-area').classList.toggle('breaking', player === 'p1');
-                document.getElementById('p2-area').classList.toggle('breaking', player === 'p2');
-            }
-        }
-
-        // 清除單局得分與犯規 (總分保留)
-        function resetInning() {
-            if(confirm("確定要重置單局數據嗎？")) {
-                ['p1', 'p2'].forEach(p => {
-                    stats[p].inning = 0;
-                    stats[p].fouls = 0;
-                    document.getElementById(p + '-inning').innerText = 0;
-                    document.getElementById(p + '-fouls').innerText = 0;
-                });
-            }
-        }
-
-        // 計時器邏輯
-        function startTimer() {
-            setInterval(() => {
-                seconds++;
-                let m = Math.floor(seconds / 60);
-                let s = seconds % 60;
-                document.getElementById('timer').innerText = 
-                    (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
-            }, 1000);
-        }
-
-        // 全螢幕切換
-        function toggleFull() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
-        }
-    </script>
+    <script src="Scoreboard.js"></script>
 </body>
 </html>
