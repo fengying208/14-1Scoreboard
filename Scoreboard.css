@@ -1,0 +1,61 @@
+* { box-sizing: border-box; user-select: none; }
+body, html {
+    margin: 0; padding: 0; height: 100%;
+    background-color: #000; font-family: "Microsoft JhengHei", sans-serif;
+    display: flex; justify-content: center; align-items: center;
+    color: #fff;
+}
+
+/* 大廳樣式 (沿用你的設定並微調) */
+.lobby-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 100;
+}
+.lobby-card {
+    background: #111; padding: 40px; border-radius: 15px;
+    width: 350px; text-align: center; border: 2px solid #ff6600;
+}
+h1 { color: #ff6600; margin-bottom: 20px; }
+.input-group { margin-bottom: 15px; text-align: left; }
+.input-group input { width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; }
+#start-btn { width: 100%; padding: 15px; background: #ff6600; border: none; color: #fff; font-weight: bold; cursor: pointer; }
+
+/* 計分板主佈局 */
+.scoreboard-container {
+    display: flex; width: 95vw; height: 90vh; gap: 20px;
+}
+
+.player-section {
+    flex: 2; display: flex; flex-direction: column; gap: 10px;
+}
+
+/* 草圖風格：白色邊框方框 */
+.box {
+    border: 2px solid #ffffff;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+}
+
+.header { height: 15%; font-size: 2.5rem; font-weight: bold; background: #1a1a1a; }
+.score-display { flex: 1; font-size: 12rem; font-weight: bold; color: #ff6600; font-family: 'Arial Black'; }
+.info-box { height: 12%; font-size: 1.5rem; background: #111; }
+.foul { color: #ff4444; border-color: #ff4444; }
+
+/* 中間控制區 */
+.center-control {
+    flex: 0.8; display: flex; flex-direction: column; 
+    justify-content: center; align-items: center; gap: 20px;
+}
+#timer { font-size: 2rem; color: #888; }
+#race-info { font-size: 3rem; color: #ff6600; font-weight: bold; margin-bottom: 20px; }
+.control-btn {
+    width: 80%; padding: 12px; background: none; 
+    border: 1px solid #444; color: #666; cursor: pointer; border-radius: 5px;
+}
+.control-btn:hover { border-color: #fff; color: #fff; }
+
+/* 擊球者高亮效果 (你 CSS 提到的亮橘框) */
+.breaking { border: 4px solid #ff6600 !important; box-shadow: 0 0 20px rgba(255, 102, 0, 0.4); }
