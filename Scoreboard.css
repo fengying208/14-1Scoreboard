@@ -38,9 +38,16 @@ body, html {
 #timer { font-size: 2rem; color: #888; }
 
 .row-score { position: relative; justify-content: center; }
-#race-info { font-size: 2.5rem; color: #555; font-weight: bold; } /* 稍微調大括號字體 */
+#race-info { font-size: 2.5rem; color: #555; font-weight: bold; }
 
-.button-group { 
+/* 頂部按鈕組：對齊總分框上方 */
+.top-button-group {
+    position: absolute; top: 0; width: 100%;
+    display: flex; flex-direction: column; gap: 5px; align-items: center;
+}
+
+/* 底部按鈕組：對齊總分框下方 */
+.bottom-button-group { 
     position: absolute; bottom: 0; width: 100%; 
     display: flex; flex-direction: column; gap: 10px; align-items: center; 
 }
@@ -51,7 +58,7 @@ body, html {
 }
 .control-btn:hover { border-color: #777; color: #777; }
 
-/* 亮橘色「下一局」按鈕：放大版本 */
+/* 亮橘色「下一局」按鈕 */
 .next-btn {
     background-color: #ff6600 !important;
     color: #fff !important;
